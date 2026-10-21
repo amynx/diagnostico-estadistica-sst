@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel docente · Diagnóstico SST</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor ancho">
+      <div class="marca">Estadística I · SST — Panel docente del diagnóstico</div>
+      <div class="acciones oculto" id="acciones-top" style="margin:0">
+        <button class="sec" id="btn-actualizar" type="button" style="padding:6px 14px">Actualizar</button>
+        <button class="sec" id="btn-csv" type="button" style="padding:6px 14px">Descargar CSV</button>
+        <button class="sec" id="btn-salir" type="button" style="padding:6px 14px">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor ancho">
+    <section id="acceso">
+      <h1>Panel docente</h1>
+      <div class="tarjeta" style="max-width:560px">
+        <p>Escribe la clave docente que configuraste en Google Apps Script.</p>
+        <div class="campo completo">
+          <label for="clave">Clave docente</label>
+          <input type="password" id="clave" autocomplete="current-password">
+        </div>
+        <div class="acciones">
+          <button id="btn-entrar" type="button">Ver resultados</button>
+          <button id="btn-demo" class="sec" type="button">Ver con datos de ejemplo</button>
+        </div>
+        <div id="msg-acceso" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <section id="panel" class="oculto">
+      <div id="aviso-demo" class="alerta oculto" style="margin-top:18px">Estás viendo <strong>datos de ejemplo inventados</strong>. Las calificaciones que hagas aquí no se guardan.</div>
+      <h1 style="margin-top:18px">Resultados del diagnóstico</h1>
+      <p class="pequeno" id="txt-actualizado"></p>
+      <div class="kpis" id="kpis"></div>
+
+      <nav class="pestanas" role="tablist">
+        <button role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+        <button role="tab" data-tab="preguntas" aria-selected="false">Por pregunta</button>
+        <button role="tab" data-tab="revisar" aria-selected="false">Revisar respuestas abiertas</button>
+        <button role="tab" data-tab="experiencia" aria-selected="false">Excel y confianza</button>
+        <button role="tab" data-tab="estudiantes" aria-selected="false">Por estudiante</button>
+      </nav>
+      <div id="tab-resumen" class="tab"></div>
+      <div id="tab-preguntas" class="tab oculto"></div>
+      <div id="tab-revisar" class="tab oculto"></div>
+      <div id="tab-experiencia" class="tab oculto"></div>
+      <div id="tab-estudiantes" class="tab oculto"></div>
+    </section>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/preguntas.js"></script>
+  <script src="assets/clave.js"></script>
+  <script src="assets/demo.js"></script>
+  <script src="assets/docente.js"></script>
+</body>
+</html>

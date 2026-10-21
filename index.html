@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prueba diagnóstica · Estadística I (SST)</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor">
+      <div class="marca">Estadística I · SST — Prueba diagnóstica</div>
+      <div class="reloj oculto" id="reloj" aria-live="off">45:00</div>
+    </div>
+    <div class="progreso oculto" id="progreso"><div></div></div>
+  </header>
+
+  <main class="contenedor">
+    <!-- Inicio -->
+    <section id="inicio">
+      <h1>Prueba diagnóstica</h1>
+      <div class="aviso">
+        <strong>Antes de empezar, lee esto</strong>
+        <ul>
+          <li>Esto <strong>no es un examen y no tiene nota</strong>. Sirve para saber desde dónde empezamos y cómo preparar las clases.</li>
+          <li>Respondes de forma individual. Tienes <strong>45 minutos</strong> en total.</li>
+          <li>Si no sabes algo, marca <strong>«No sé»</strong> o déjalo en blanco. Eso también es información útil.</li>
+          <li>Cuando puedas, cuenta cómo pensaste: tu forma de razonar vale tanto como el resultado.</li>
+          <li>No necesitas saber estadística ni fórmulas. Todos los datos son inventados.</li>
+          <li>No escribas datos personales, de salud ni historias de accidentes reales.</li>
+          <li>Tus respuestas se guardan en este dispositivo mientras respondes. Envíalas al final.</li>
+        </ul>
+      </div>
+      <div class="tarjeta">
+        <h2>Tiempo sugerido por sección</h2>
+        <div class="tabla-scroll"><table class="datos" style="min-width:0">
+          <thead><tr><th scope="col" style="text-align:left">Sección</th><th scope="col">Tiempo</th></tr></thead>
+          <tbody id="tabla-tiempos"></tbody>
+        </table></div>
+        <div class="campo completo" style="margin-top:16px">
+          <label for="nombre">Nombre o código (opcional)</label>
+          <input type="text" id="nombre" maxlength="60" autocomplete="off">
+        </div>
+        <div class="acciones">
+          <button id="btn-comenzar">Comenzar la prueba</button>
+          <span class="pequeno" id="txt-reanudar"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prueba -->
+    <form id="prueba" class="oculto" novalidate></form>
+
+    <!-- Envío -->
+    <section id="envio" class="oculto">
+      <div class="tarjeta">
+        <h2>Revisa y envía</h2>
+        <p id="resumen-envio"></p>
+        <div id="msg-envio"></div>
+        <div class="acciones">
+          <button id="btn-enviar" type="button">Enviar mis respuestas</button>
+          <a class="boton sec" href="#seccion-A">Volver a revisar</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gracias -->
+    <section id="gracias" class="oculto">
+      <h1>¡Gracias!</h1>
+      <div class="aviso">
+        <p>Tus respuestas se enviaron. Recuerda: lo que dejaste en blanco o marcaste como «No sé» también ayuda a planear las clases.</p>
+        <p class="pequeno" id="txt-codigo"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/preguntas.js"></script>
+  <script src="assets/prueba.js"></script>
+</body>
+</html>
