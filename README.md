@@ -57,3 +57,7 @@ Para comprobar que quedó bien, abre la URL `/exec` en el navegador: debe decir 
 ## Si cambias el script
 
 Después de editar `Codigo.gs` en Apps Script: **Implementar → Administrar implementaciones → editar (lápiz) → Versión: nueva versión → Implementar**. Así la URL `/exec` sigue siendo la misma.
+
+## Si cambias archivos de la web
+
+Los enlaces a `assets/` llevan un número de versión (`?v=4`) en `index.html` y `docente.html`. Cuando modifiques un archivo de `assets/`, sube ese número (por ejemplo, a `?v=5`) para que los navegadores no sigan usando la versión anterior guardada en caché.
