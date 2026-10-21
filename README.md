@@ -9,8 +9,8 @@ Versión web de la prueba diagnóstica de la Clase 1. Los estudiantes la respond
 ## Qué hace
 
 **Prueba (estudiantes)**
-- 5 secciones que suman 45 minutos, con datos ficticios y un botón «No sé» en cada pregunta.
-- Reloj de 45 minutos con avisos a los 30 y 40 minutos (no cierra la prueba).
+- 5 secciones que suman 60 minutos (13 + 16 + 11 + 13 + 7), con datos ficticios y un botón «No sé» en cada pregunta.
+- Reloj de 60 minutos con avisos cuando quedan 15 y 5 minutos (no cierra la prueba). La duración se cambia en `DURACION_MIN` de `assets/config.js`.
 - Guarda el avance en el dispositivo: si se recarga la página, no se pierde nada.
 - Funciona en celular. El nombre es opcional.
 

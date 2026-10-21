@@ -3,6 +3,7 @@
   const CFG = window.DIAG_CONFIG || {};
   const SECCIONES = window.SECCIONES;
   const CLAVE_LOCAL = "diagSST.v1";
+  const DURACION = CFG.DURACION_MIN || 60;
   const $ = (s, el = document) => el.querySelector(s);
 
   let estado = cargar() || { id: nuevoId(), nombre: "", inicio: null, respuestas: {}, enviado: false };
@@ -25,6 +26,7 @@
   $("#tabla-tiempos").innerHTML = SECCIONES.map(s => `<tr><td style="text-align:left">${s.id}. ${esc(s.titulo)}</td><td>${s.minutos} min</td></tr>`).join("")
     + `<tr><th style="text-align:left">Total</th><th>${SECCIONES.reduce((a, s) => a + s.minutos, 0)} min</th></tr>`;
   $("#nombre").value = estado.nombre || "";
+  $("#txt-duracion").textContent = DURACION;
 
   if (estado.enviado) mostrarGracias();
   else if (estado.inicio) {
@@ -147,14 +149,14 @@
   // ── Reloj (orientativo: no cierra la prueba)
   let avisos = {};
   function iniciarReloj() {
-    const dur = (CFG.DURACION_MIN || 45) * 60000, ini = new Date(estado.inicio).getTime(), reloj = $("#reloj");
+    const dur = DURACION * 60000, ini = new Date(estado.inicio).getTime(), reloj = $("#reloj");
     const tic = () => {
       const pasado = Date.now() - ini, resta = dur - pasado;
-      if (resta <= 0) { reloj.textContent = "Tiempo cumplido"; reloj.classList.add("fin"); if (!avisos.fin) { avisos.fin = 1; toast("Se cumplieron los 45 minutos. Termina tu idea y envía tus respuestas."); } return; }
+      if (resta <= 0) { reloj.textContent = "Tiempo cumplido"; reloj.classList.add("fin"); if (!avisos.fin) { avisos.fin = 1; toast(`Se cumplieron los ${DURACION} minutos. Termina tu idea y envía tus respuestas.`); } return; }
       const m = Math.floor(resta / 60000), s = Math.floor((resta % 60000) / 1000);
       reloj.textContent = `Quedan ${m}:${String(s).padStart(2, "0")}`;
-      if (pasado > 30 * 60000 && !avisos.t30) { avisos.t30 = 1; toast("Llevas 30 minutos. Quedan unos 15."); }
-      if (pasado > 40 * 60000 && !avisos.t40) { avisos.t40 = 1; toast("Quedan unos 5 minutos. Recuerda enviar al final."); }
+      if (resta < 15 * 60000 && resta > 5 * 60000 && !avisos.t15) { avisos.t15 = 1; toast("Quedan unos 15 minutos."); }
+      if (resta < 5 * 60000 && !avisos.t5) { avisos.t5 = 1; toast("Quedan unos 5 minutos. Recuerda enviar al final."); }
     };
     tic(); setInterval(tic, 1000);
   }

@@ -47,7 +47,7 @@
 
   window.SECCIONES = [
     {
-      id: "A", titulo: "Leer una tabla", minutos: 10,
+      id: "A", titulo: "Leer una tabla", minutos: 13,
       intro: `<p><strong>El caso.</strong> En el Taller Metalmecánico Los Robles (empresa ficticia), las personas reportan las condiciones inseguras que encuentran. La tabla muestra los reportes de septiembre.</p>${tablaHTML()}`,
       items: [
         { id: "A1", enunciado: "¿Cuántos reportes de «objetos en el paso» hubo en Bodega?", campos: [{ id: "v", tipo: "numero", sufijo: "reportes" }] },
@@ -60,7 +60,7 @@
       ],
     },
     {
-      id: "B", titulo: "Cálculos de todos los días", minutos: 12,
+      id: "B", titulo: "Cálculos de todos los días", minutos: 16,
       intro: `<p class="nota">Puedes hacer las cuentas en una hoja aparte o en tu cabeza. Si llegas al resultado de otra forma, también vale.</p>`,
       items: [
         { id: "B1", enunciado: "Una capacitación dura 1 hora y 45 minutos. Si empieza a las 2:30 p. m., ¿a qué hora termina?",
@@ -75,7 +75,7 @@
       ],
     },
     {
-      id: "C", titulo: "Leer un gráfico", minutos: 8,
+      id: "C", titulo: "Leer un gráfico", minutos: 11,
       intro: `<p>El taller hace una charla de seguridad cada mes. El gráfico muestra cuántas personas asistieron de junio a septiembre.</p>${graficoSVG()}`,
       items: [
         { id: "C1", enunciado: "¿Qué información muestra el gráfico? Escríbelo con tus palabras.", campos: [{ id: "v", tipo: "texto_largo" }] },
@@ -88,7 +88,7 @@
       ],
     },
     {
-      id: "D", titulo: "¿Qué podemos concluir?", minutos: 10,
+      id: "D", titulo: "¿Qué podemos concluir?", minutos: 13,
       intro: `<p>Vuelve a mirar la Tabla 1 (sección A). En una reunión, un supervisor dice:</p>
         <blockquote>«Bodega tuvo 10 reportes y Pintura solo 4. Bodega es el área más peligrosa del taller».</blockquote>
         <details class="ver-tabla"><summary>Ver otra vez la Tabla 1</summary>${tablaHTML()}</details>`,
@@ -102,7 +102,7 @@
       ],
     },
     {
-      id: "E", titulo: "Tu experiencia y tus expectativas", minutos: 5, sinNoSe: true,
+      id: "E", titulo: "Tu experiencia y tus expectativas", minutos: 7, sinNoSe: true,
       intro: `<p class="nota">Aquí no hay respuestas correctas ni incorrectas.</p>`,
       items: [
         { id: "E1", enunciado: "¿Has usado Excel u otra hoja de cálculo?",
