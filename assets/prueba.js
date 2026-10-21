@@ -3,7 +3,7 @@
   const CFG = window.DIAG_CONFIG || {};
   const SECCIONES = window.SECCIONES;
   const CLAVE_LOCAL = "diagSST.v1";
-  const DURACION = CFG.DURACION_MIN || 60;
+  const MINIMO = CFG.MINUTOS_MINIMOS || 60; // minutos que deben pasar antes de poder enviar
   const $ = (s, el = document) => el.querySelector(s);
 
   let estado = cargar() || { id: nuevoId(), nombre: "", inicio: null, respuestas: {}, enviado: false };
@@ -23,10 +23,9 @@
   }
 
   // ── Inicio
-  $("#tabla-tiempos").innerHTML = SECCIONES.map(s => `<tr><td style="text-align:left">${s.id}. ${esc(s.titulo)}</td><td>${s.minutos} min</td></tr>`).join("")
-    + `<tr><th style="text-align:left">Total</th><th>${SECCIONES.reduce((a, s) => a + s.minutos, 0)} min</th></tr>`;
+  $("#lista-secciones").innerHTML = SECCIONES.map(s => `<li>${esc(s.titulo)}</li>`).join("");
   $("#nombre").value = estado.nombre || "";
-  $("#txt-duracion").textContent = DURACION;
+  $("#txt-minimo").textContent = MINIMO;
 
   if (estado.enviado) mostrarGracias();
   else if (estado.inicio) {
@@ -80,7 +79,7 @@
     const form = $("#prueba");
     form.innerHTML = SECCIONES.map(s => `
       <section class="tarjeta" id="seccion-${s.id}">
-        <div class="seccion-cab"><h2>Sección ${s.id}. ${esc(s.titulo)}</h2><span class="min">${s.minutos} minutos</span></div>
+        <div class="seccion-cab"><h2>Sección ${s.id}. ${esc(s.titulo)}</h2></div>
         ${s.intro}
         ${s.items.map(it => `
           <div class="pregunta" id="p-${it.id}" data-item="${it.id}">
@@ -146,17 +145,27 @@
       : `Respondiste todas las preguntas (${items.length}). Cuando quieras, envía tus respuestas.`;
   }
 
-  // ── Reloj (orientativo: no cierra la prueba)
-  let avisos = {};
+  // ── Tiempo: no hay límite, pero solo se puede enviar después de la permanencia mínima
+  let enviando = false, avisoListo = false;
+  const minimoCumplido = () => Date.now() - new Date(estado.inicio).getTime() >= MINIMO * 60000;
+  const hora = t => new Date(t).toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit" });
   function iniciarReloj() {
-    const dur = DURACION * 60000, ini = new Date(estado.inicio).getTime(), reloj = $("#reloj");
+    const ini = new Date(estado.inicio).getTime(), reloj = $("#reloj"), btn = $("#btn-enviar"), espera = $("#txt-espera");
     const tic = () => {
-      const pasado = Date.now() - ini, resta = dur - pasado;
-      if (resta <= 0) { reloj.textContent = "Tiempo cumplido"; reloj.classList.add("fin"); if (!avisos.fin) { avisos.fin = 1; toast(`Se cumplieron los ${DURACION} minutos. Termina tu idea y envía tus respuestas.`); } return; }
-      const m = Math.floor(resta / 60000), s = Math.floor((resta % 60000) / 1000);
-      reloj.textContent = `Quedan ${m}:${String(s).padStart(2, "0")}`;
-      if (resta < 15 * 60000 && resta > 5 * 60000 && !avisos.t15) { avisos.t15 = 1; toast("Quedan unos 15 minutos."); }
-      if (resta < 5 * 60000 && !avisos.t5) { avisos.t5 = 1; toast("Quedan unos 5 minutos. Recuerda enviar al final."); }
+      const pasado = Date.now() - ini, falta = MINIMO * 60000 - pasado;
+      const h = Math.floor(pasado / 3600000), m = Math.floor((pasado % 3600000) / 60000), s = Math.floor((pasado % 60000) / 1000);
+      reloj.textContent = `Tiempo: ${h ? h + ":" + String(m).padStart(2, "0") : m}:${String(s).padStart(2, "0")}`;
+      if (falta > 0) {
+        btn.disabled = true;
+        const min = Math.ceil(falta / 60000);
+        espera.classList.remove("oculto");
+        espera.textContent = `Podrás enviar a partir de las ${hora(ini + MINIMO * 60000)} (faltan ${min} minuto${min === 1 ? "" : "s"}). Mientras tanto, revisa tus respuestas o cuenta cómo pensaste.`;
+      } else {
+        espera.classList.add("oculto");
+        if (!enviando) btn.disabled = false;
+        reloj.classList.add("fin");
+        if (!avisoListo) { avisoListo = true; toast("Ya puedes enviar tus respuestas cuando termines."); }
+      }
     };
     tic(); setInterval(tic, 1000);
   }
@@ -165,13 +174,14 @@
   $("#btn-enviar").addEventListener("click", async () => {
     const msg = $("#msg-envio"), btn = $("#btn-enviar");
     msg.innerHTML = "";
+    if (!minimoCumplido()) return;
     if (!CFG.API_URL) {
       msg.innerHTML = `<p class="error">La prueba todavía no está conectada a la hoja de resultados. Avísale a la docente. Tus respuestas siguen guardadas en este dispositivo.</p>`;
       return;
     }
     SECCIONES.forEach(s => s.items.forEach(it => { estado.respuestas[it.id] = leerItem(it); }));
     estado.fin = new Date().toISOString(); guardar();
-    btn.disabled = true; btn.textContent = "Enviando…";
+    enviando = true; btn.disabled = true; btn.textContent = "Enviando…";
     try {
       const res = await fetch(CFG.API_URL, {
         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -183,6 +193,8 @@
     } catch (e) {
       msg.innerHTML = `<p class="error">No se pudieron enviar las respuestas (${esc(e.message)}). Revisa la conexión a internet e inténtalo otra vez. Tus respuestas siguen guardadas en este dispositivo.</p>`;
       btn.disabled = false; btn.textContent = "Intentar de nuevo";
+    } finally {
+      enviando = false;
     }
   });
 

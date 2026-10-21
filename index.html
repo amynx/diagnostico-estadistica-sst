@@ -11,7 +11,7 @@
   <header class="barra">
     <div class="contenedor">
       <div class="marca">Estadística I · SST — Prueba diagnóstica</div>
-      <div class="reloj oculto" id="reloj" aria-live="off">60:00</div>
+      <div class="reloj oculto" id="reloj" aria-live="off"></div>
     </div>
     <div class="progreso oculto" id="progreso"><div></div></div>
   </header>
@@ -24,7 +24,8 @@
         <strong>Antes de empezar, lee esto</strong>
         <ul>
           <li>Esto <strong>no es un examen y no tiene nota</strong>. Sirve para saber desde dónde empezamos y cómo preparar las clases.</li>
-          <li>Respondes de forma individual. Tienes <strong><span id="txt-duracion">60</span> minutos</strong> en total.</li>
+          <li>Respondes de forma individual. <strong>No hay límite de tiempo</strong>: tómate el que necesites.</li>
+          <li>Podrás enviar tus respuestas cuando hayan pasado al menos <strong><span id="txt-minimo">60</span> minutos</strong> desde que empezaste. Si terminas antes, aprovecha para revisar o contar cómo pensaste.</li>
           <li>Si no sabes algo, marca <strong>«No sé»</strong> o déjalo en blanco. Eso también es información útil.</li>
           <li>Cuando puedas, cuenta cómo pensaste: tu forma de razonar vale tanto como el resultado.</li>
           <li>No necesitas saber estadística ni fórmulas. Todos los datos son inventados.</li>
@@ -33,11 +34,8 @@
         </ul>
       </div>
       <div class="tarjeta">
-        <h2>Tiempo sugerido por sección</h2>
-        <div class="tabla-scroll"><table class="datos" style="min-width:0">
-          <thead><tr><th scope="col" style="text-align:left">Sección</th><th scope="col">Tiempo</th></tr></thead>
-          <tbody id="tabla-tiempos"></tbody>
-        </table></div>
+        <h2>Secciones de la prueba</h2>
+        <ol id="lista-secciones"></ol>
         <div class="campo completo" style="margin-top:16px">
           <label for="nombre">Nombre o código (opcional)</label>
           <input type="text" id="nombre" maxlength="60" autocomplete="off">
@@ -57,6 +55,7 @@
       <div class="tarjeta">
         <h2>Revisa y envía</h2>
         <p id="resumen-envio"></p>
+        <p class="alerta" id="txt-espera" aria-live="polite"></p>
         <div id="msg-envio"></div>
         <div class="acciones">
           <button id="btn-enviar" type="button">Enviar mis respuestas</button>
